@@ -1,4 +1,7 @@
 #import PYGAME
+
+botIQ = 1
+
 def revert(s):
     if s == 'X':
         return 'O'
@@ -102,6 +105,7 @@ class field:
         else:
             return False
     def AI_turn(self, symb, recur=0):
+        global botIQ
         max_turn = [-999999999999, [-1, -1]]
         any_turn = [-1, -1]
         for i in range(len(self.cells)):
@@ -115,7 +119,7 @@ class field:
                         mB = 4
                         mA = 1
                     res = self.get_sit(symb) * mA - self.get_sit(revert(symb)) * mB
-                    if recur < 1:
+                    if recur < botIQ:
                         is_win_next = self.AI_turn(revert(symb), recur=recur+1)[1]
                     else:
                         is_win_next = None
@@ -155,6 +159,7 @@ class field:
             print(''.join(self.cells[i]))
 
 try:
+    botIQ = int(input('Enter hardness level (0 - easy, 1 - medium, 2 - hard, 3 - nightmare (soooo unoptimised)) -> '))
     mode_A = input('Chose 1-st player type (BOT or PLAYER) -> ')
     mode_B = input('Chose 2-nd player type (BOT or PLAYER) -> ')
 
@@ -166,6 +171,7 @@ try:
     kg = True
     tick = 0
     while kg:
+        print()
         game.out()
         tick += 1
         if tick % 2 == 1:
@@ -188,10 +194,12 @@ try:
             break
         sit = game.get_winner()
         if sit:
-            print(sit)
+            print('\n' * 2, sit)
             game.out()
             break
             
-except ZeroDivisionError as E:
+except Exception as E:
     print(E)
-    print('Сработала защита от дурака')
+    input('\nЗдась должна была быть защита от дурака... Но это просто сообщение об ошибке. Нажмите Enter для перезапуска игры. -> ')
+    fl = open('tick-tack-toe.py', 'r')
+    exec(fl.read())
