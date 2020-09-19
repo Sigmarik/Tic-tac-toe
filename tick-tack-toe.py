@@ -107,7 +107,7 @@ class field:
     def AI_turn(self, symb, recur=0):
         global botIQ
         max_turn = [-999999999999, [-1, -1]]
-        any_turn = [-1, -1]
+        any_turn = [-999999999, [-1, -1]]
         for i in range(len(self.cells)):
             for j in range(len(self.cells[i])):
                 if self.cells[i][j] == '.':
@@ -130,9 +130,10 @@ class field:
                     else:
                         if res > max_turn[0]:
                             max_turn = [res, [i, j]]
-                    any_turn = [i, j]
+                    if res > any_turn[0]:
+                        any_turn = [res, [i, j]]
         if max_turn[1] == [-1, -1]:
-            return [any_turn, revert(symb)]
+            return [any_turn[1], revert(symb)]
         self.cells[max_turn[1][0]][max_turn[1][1]] = symb
         r_win = self.get_winner()
         self.cells[max_turn[1][0]][max_turn[1][1]] = '.'
