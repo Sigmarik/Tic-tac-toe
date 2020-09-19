@@ -131,11 +131,11 @@ class field:
                         if res > max_turn[0]:
                             max_turn = [res, [i, j]]
                     any_turn = [i, j]
+        if max_turn[1] == [-1, -1]:
+            return [any_turn, revert(symb)]
         self.cells[max_turn[1][0]][max_turn[1][1]] = symb
         r_win = self.get_winner()
         self.cells[max_turn[1][0]][max_turn[1][1]] = '.'
-        if max_turn[1] == [-1, -1]:
-            return [any_turn, 'NOPE']
         return [max_turn[1], r_win]
     def get_winner(self):
         res = self.get_sit('X') - self.get_sit('O')
